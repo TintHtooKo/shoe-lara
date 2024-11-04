@@ -54,10 +54,10 @@
 								<p class="mt-5">________________OR________________</p>
 								<h3>Login With</h3>
 								<div class="d-flex align-items-center justify-content-center gap-3">
-									<a href="#" class="mx-3">
+									<a href="{{route('socialLogin','google')}}" class="mx-3">
 										<img src="{{asset('user/img/svg/google.svg')}}" style="width:50px" alt="Google logo" class="mx-1">
 									</a>
-									<a href="#" class="">
+									<a href="{{route('socialLogin','facebook')}}" class="">
 										<img src="{{asset('user/img/svg/facebook.svg')}}" style="width:60px" alt="Facebook logo" class="mx-1">
 									</a>
 								</div>

@@ -9,9 +9,10 @@
          
       </div>
       <div class="col-12 col-md-6">
-          <form action="">
+          <form action="{{route('Admin#UserList')}}" method="get">
+              @csrf
               <div class="input-group">
-                  <input type="text" class="form-control mx-2 shadow-md" placeholder="Search">
+                  <input type="text" value="{{request('search')}}" name="search" class="form-control mx-2 shadow-md" placeholder="Search">
                   <button type="submit" class="btn bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></button>
               </div>
           </form>
@@ -23,6 +24,7 @@
               <tr>
                   <th scope="col">Full Name</th>
                   <th scope="col">Email</th>
+                  <th scope="col">Login Method</th>
                   <th scope="col">Phone</th>
                   <th scope="col">Address</th>
                   @if (Auth::user()->role == 'superadmin')
@@ -35,6 +37,15 @@
               <tr>
                   <td>{{ $item->name }}</td>
                   <td>{{ $item->email }}</td>
+                  <td>
+                    @if ($item->provider == 'google')
+                        Google
+                    @elseif ($item->provider == 'facebook')
+                        Facebook
+                    @else
+                        Default
+                    @endif
+                  </td>
                   <td>{{ $item->phone ?? '-' }}</td>
                   <td>{{ $item->address ?? '-' }}</td>
                   @if (Auth::user()->role == 'superadmin')
