@@ -69,27 +69,17 @@
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item @if(Request::route()->getName() == 'User#Cart') active @endif"><a href="{{route('User#Cart')}}" class="cart"><span class="ti-bag"></span></a></li>
-							<li class="nav-item">
-								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
-							</li>
 						</ul>
 					</div>
 				</div>
 			</nav>
 		</div>
-		<div class="search_input" id="search_input_box">
-			<div class="container">
-				<form class="d-flex justify-content-between">
-					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
-					<button type="submit" class="btn"></button>
-					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
-				</form>
-			</div>
-		</div>
 	</header>
 	<!-- End Header Area -->
 
 	@yield('content')   
+	@include('sweetalert::alert')
+
 
 	<!-- start footer Area -->
 	<footer class="footer-area section_gap">

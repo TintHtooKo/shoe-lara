@@ -62,6 +62,17 @@
 							<div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="primary-btn">Register</button>
 							</div>
+							<hr>
+							<div class="col-md-12">
+								<div class="d-flex align-items-center justify-content-center gap-3">
+									<a href="#" class="mx-3">
+										<img src="{{asset('user/img/svg/google.svg')}}" style="width:50px" alt="Google logo" class="mx-1">
+									</a>
+									<a href="#" class="">
+										<img src="{{asset('user/img/svg/facebook.svg')}}" style="width:60px" alt="Facebook logo" class="mx-1">
+									</a>
+								</div>
+							</div>
 						</form>
 					</div>
 				</div>

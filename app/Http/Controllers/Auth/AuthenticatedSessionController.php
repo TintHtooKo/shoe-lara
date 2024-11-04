@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -17,7 +18,7 @@ class AuthenticatedSessionController extends Controller
     public function create(): View
     {
         // return view('auth.login');
-        return view('user.authentication.login');
+        return view('authentication.login');
     }
 
     /**
@@ -29,6 +30,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        Alert::success('Success', 'Login Successfully');
         // return redirect()->intended(route('dashboard', absolute: false));
         if($request->user()->role == 'admin' || $request->user()->role == 'superadmin'){
             return to_route('Admin#Home');

@@ -48,14 +48,19 @@
 								@enderror
 							</div>
 							<div class="col-md-12 form-group">
-								<div class="creat_account">
-									<input type="checkbox" id="f-option2" name="selector">
-									<label for="f-option2">Keep me logged in</label>
-								</div>
-							</div>
-							<div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="primary-btn">Log In</button>
-								<a href="#">Forgot Password?</a>
+							</div>
+							<div class="col-md-12">
+								<p class="mt-5">________________OR________________</p>
+								<h3>Login With</h3>
+								<div class="d-flex align-items-center justify-content-center gap-3">
+									<a href="#" class="mx-3">
+										<img src="{{asset('user/img/svg/google.svg')}}" style="width:50px" alt="Google logo" class="mx-1">
+									</a>
+									<a href="#" class="">
+										<img src="{{asset('user/img/svg/facebook.svg')}}" style="width:60px" alt="Facebook logo" class="mx-1">
+									</a>
+								</div>
 							</div>
 						</form>
 					</div>
