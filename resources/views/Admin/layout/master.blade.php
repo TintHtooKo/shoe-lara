@@ -140,6 +140,18 @@
                         <i class="fa-solid fa-users"></i>
                         <span class="nav-text">User List</span></a>
                     </li>
+                    <li><a href="{{route('Admin#shoeTypes')}}" aria-expanded="false">
+                        <i class="fa-solid fa-table-list"></i>
+                        <span class="nav-text">Shoes Types</span></a>
+                    </li>
+                    <li><a href="{{route('Admin#contact')}}" aria-expanded="false">
+                        <i class="fa-solid fa-address-book"></i>
+                        <span class="nav-text">Contact List</span>
+                        @if ($unreadContact > 0)
+                            <span class="bg-danger px-2 py-1 rounded mx-1 text-white">{{$unreadContact}}</span>
+                        @endif
+                    </a>
+                    </li>
                     
                 </ul>
             </div>

@@ -22,6 +22,7 @@
       <table class="table table-hover table-bordered table-dark text-center">
           <thead>
               <tr>
+                  <th scope="col">No</th>
                   <th scope="col">Full Name</th>
                   <th scope="col">Email</th>
                   <th scope="col">Login Method</th>
@@ -33,8 +34,10 @@
               </tr>
           </thead>
           <tbody>
+              @if ($user->count() != 0)
               @foreach ($user as $item)
               <tr>
+                <td>{{ ($user->currentPage() - 1) * $user->perPage() + $loop->iteration }}</td>
                   <td>{{ $item->name }}</td>
                   <td>{{ $item->email }}</td>
                   <td>
@@ -51,17 +54,20 @@
                   @if (Auth::user()->role == 'superadmin')
                   <td>
                       <div class=" d-flex align-items-center justify-content-center ">
-                        <a href="#" class="btn btn-sm btn-warning mx-2"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <form action="">
-                          <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
-                        </form>
+                          <a href="{{route('Admin#deleteUser',$item->id)}}" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
                       </div>
                   </td>
                   @endif
               </tr>
               @endforeach
+              @else
+                  <tr>
+                      <td colspan="7">There is no user list</td>
+                  </tr>
+              @endif
           </tbody>
       </table>
+      <span class="d-flex justify-content-end">{{ $user->links() }}</span>
   </div>
 </div>
 
