@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserMiddleware
@@ -16,10 +17,13 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->role == 'user'){
-            return $next($request);
+        if(Auth::check()){
+            if(Auth::user()->role == 'user'){
+                return $next($request);
+            }
         }
 
-        return back();
+        Alert::warning('Warning', 'You need to login first!');
+        return to_route('login');
     }
 }

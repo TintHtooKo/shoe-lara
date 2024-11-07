@@ -30,6 +30,8 @@
 	<link rel="stylesheet" href="{{asset('user/css/ion.rangeSlider.skinFlat.css')}}" />
 	<link rel="stylesheet" href="{{asset('user/css/magnific-popup.css')}}">
 	<link rel="stylesheet" href="{{asset('user/css/main.css')}}">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -176,6 +178,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="{{asset('user/js/gmaps.min.js')}}"></script>
 	<script src="{{asset('user/js/main.js')}}"></script>
+	@yield('js-custom')
 </body>
 
 </html>

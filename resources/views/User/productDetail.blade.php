@@ -50,17 +50,27 @@
                         </a></li>
                     </ul>
                     <p>{{$product->short_desc}}</p>
-                    <div class="product_count">
-                        <label for="qty">Quantity:</label>
-                        <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
-                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                         class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
-                         class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
-                    </div>
-                    <div class="card_area d-flex align-items-center">
-                        <a class="primary-btn" href="#">Add to Cart</a>
-                    </div>
+                        <form action="{{route('User#CartAdd')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="productId" value="{{$product->id}}">
+                            <input type="hidden" name="userId" @if(Auth::user() != null) value="{{Auth::user()->id}}" @endif>
+                            <div class="product_count">
+                                <label for="qty">Quantity:</label>
+                                <input type="number" name="count" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
+                                <button onclick="var result = document.getElementById('sst'); var sst = result.value; if (!isNaN(sst)) result.value = parseInt(sst) + 1; return false;" 
+                                    class="increase items-count" type="button">
+                                    <i class="lnr lnr-chevron-up"></i>
+                                </button>
+                                <button onclick="var result = document.getElementById('sst'); var sst = result.value; if (!isNaN(sst) && sst > 1) result.value = parseInt(sst) - 1; return false;" 
+                                    class="reduced items-count" type="button">
+                                    <i class="lnr lnr-chevron-down"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="card_area d-flex align-items-center">
+                                <input type="submit" @if($product->stock == 0) disabled @endif class=" @if($product->stock == 0) btn-secondary btn @endif primary-btn border-0" value="Add To Cart" />
+                            </div>
+                        </form>
                 </div>
             </div>
         </div>
