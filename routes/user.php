@@ -12,4 +12,6 @@ Route::group(['prefix'=>'user'],function(){
 
     Route::get('shop',[UserController::class,'UserShop'])->name('User#Shop');
     Route::get('cart',[UserController::class,'UserCart'])->name('User#Cart');
+
+    Route::get('product/{id}',[UserController::class,'productDetail'])->name('User#productDetail');
 }); 

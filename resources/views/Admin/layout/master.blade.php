@@ -140,6 +140,10 @@
                         <i class="fa-solid fa-users"></i>
                         <span class="nav-text">User List</span></a>
                     </li>
+                    <li><a href="{{route('Admin#productList')}}" aria-expanded="false">
+                        <i class="fa-solid fa-shoe-prints"></i>
+                        <span class="nav-text">Shoe List</span></a>
+                    </li>
                     <li><a href="{{route('Admin#shoeTypes')}}" aria-expanded="false">
                         <i class="fa-solid fa-table-list"></i>
                         <span class="nav-text">Shoes Types</span></a>
@@ -226,6 +230,18 @@
 
 
     <script src="{{asset('admin/js/dashboard/dashboard-1.js')}}"></script>
+
+    {{-- image upload --}}
+    <script>
+        function loadFile(event){
+            var render = new FileReader();
+            render.onload = function(){
+                var output = document.getElementById('output');
+                output.src = render.result;
+            }
+            render.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 
 </body>
 
