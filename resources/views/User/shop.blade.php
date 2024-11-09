@@ -95,9 +95,9 @@
 										@endif
 									</h6>
 									<div class="price">
-										<h6>{{$item->new_price}} AED</h6>
+										<h6>{{$item->new_price}} MMK</h6>
 										@if ($item->old_price)
-										<h6 class="l-through">{{$item->old_price}} AED</h6>
+										<h6 class="l-through">{{$item->old_price}} MMK</h6>
 										@endif
 									</div>
 									<div class="prd-bottom">
@@ -107,10 +107,16 @@
 												<input type="hidden" name="productId" value="{{$item->id}}">
 												<input type="hidden" name="userId" @if(Auth::user() != null) value="{{Auth::user()->id}}" @endif">
 												<input type="hidden" name="count" value="1">
-												<button type="submit" class="border-0" style="background: transparent">
+												<button type="submit" @if($item->stock == 0) disabled @endif class="border-0" style="background: transparent">
+													@if ($item->stock == 0)
+													<div class="px-2 py-1 " style=" background: #828bb3; border-radius:50%; cursor:pointer; color : white">
+														<i class="fa-solid fa-circle-xmark"></i>
+													</div>
+													@else
 													<div class="px-2 py-1 hover-bg" style=" background: #828bb3; border-radius:50%; cursor:pointer;">
 														<span class="ti-bag" style=" color:white"></span>
 													</div>
+													@endif
 												</button>
 											</form>
 											<a href="{{route('User#productDetail',$item->id)}}" class="social-info">

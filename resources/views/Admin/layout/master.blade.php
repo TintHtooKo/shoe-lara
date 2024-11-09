@@ -148,6 +148,10 @@
                         <i class="fa-solid fa-table-list"></i>
                         <span class="nav-text">Shoes Types</span></a>
                     </li>
+                    <li><a href="{{route('Admin#checkout')}}" aria-expanded="false">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                        <span class="nav-text">Checkout List</span></a>
+                    </li>
                     <li><a href="{{route('Admin#contact')}}" aria-expanded="false">
                         <i class="fa-solid fa-address-book"></i>
                         <span class="nav-text">Contact List</span>

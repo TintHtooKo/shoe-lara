@@ -17,5 +17,13 @@ Route::group(['prefix'=>'user'],function(){
     Route::group(['prefix'=>'cart','middleware'=>'user'],function(){
         Route::get('cart',[CartController::class,'UserCart'])->name('User#Cart');
         Route::post('cart',[CartController::class,'addToCart'])->name('User#CartAdd');
+        Route::get('cart/delete/{id}',[CartController::class,'deletproductDetaileCart'])->name('User#CartDelete');
+        Route::get('cart/temp',[CartController::class,'cartTemp'])->name('User#CartTemp');
+    });
+
+    Route::group(['prefix'=>'payment','middleware'=>'user'],function(){
+        Route::get('',[UserController::class,'UserCheckoutPage'])->name('User#CheckoutPage');
+        Route::post('',[UserController::class,'UserCheckout'])->name('User#Checkout');
+        Route::get('success',[UserController::class,'Success'])->name('User#Success');
     });
 }); 

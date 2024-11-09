@@ -43,6 +43,7 @@
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
 					<a class="navbar-brand logo_h" href="{{route('User#Home')}}"><img src="{{asset('user/img/logo.png')}}" alt=""></a>
+					
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
@@ -68,6 +69,8 @@
 							@else
 							<li class="nav-item @if(Request::route()->getName() == 'login') active @endif"><a class="nav-link" href="{{route('login')}}">Login</a></li>
 							@endif
+							<li class="nav-item mob @if(Request::route()->getName() == 'User#Cart') active @endif"><a href="{{route('User#Cart')}}" class="cart"><span class="ti-bag"></span></a></li>
+							
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item @if(Request::route()->getName() == 'User#Cart') active @endif"><a href="{{route('User#Cart')}}" class="cart"><span class="ti-bag"></span></a></li>
@@ -178,6 +181,16 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="{{asset('user/js/gmaps.min.js')}}"></script>
 	<script src="{{asset('user/js/main.js')}}"></script>
+	<script>
+        function loadFile(event){
+            var render = new FileReader();
+            render.onload = function(){
+                var output = document.getElementById('output');
+                output.src = render.result;
+            }
+            render.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 	@yield('js-custom')
 </body>
 

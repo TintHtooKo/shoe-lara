@@ -195,9 +195,9 @@
 									@endif
 								</h6>
 								<div class="price">
-									<h6>{{$item->new_price}}AED</h6>
+									<h6>{{$item->new_price}}MMK</h6>
 									@if ($item->old_price)
-									<h6 class="l-through">{{$item->old_price}}AED</h6>
+									<h6 class="l-through">{{$item->old_price}}MMK</h6>
 									@endif
 								</div>
 								<div class="prd-bottom">

@@ -36,7 +36,7 @@
             <div class="col-lg-5 offset-lg-1">
                 <div class="s_product_text">
                     <h3>{{$product->name}}</h3>
-                    <h2>{{$product->new_price}}AED</h2>
+                    <h2>{{$product->new_price}}MMK</h2>
                     <ul class="list">
                         <li><a class="active" href="#"><span>Category</span> : {{$product->type}}</a></li>
                         <li><a href="#"><span>Availibility</span> : 

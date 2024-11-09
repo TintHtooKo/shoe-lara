@@ -33,21 +33,23 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <input type="hidden" id="userId" value="{{Auth::user()->id}}">
                             @if ($cart->count() > 0)
                                 @foreach ($cart as $item)
                                 <tr>
                                     <td>
+                                        <input type="hidden" class="productId" name="product_id" value="{{$item->product_id}}">
                                         <div class="media">
                                             <div class="d-flex">
                                                 <img src="{{asset('product/'.$item->image)}}" style="width: 100px;" alt="">
                                             </div>
                                             <div class="media-body">
-                                                <p>{{$item->name}}</p>
+                                                <p class="productName">{{$item->name}}</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <h5 class="price">{{$item->new_price}} AED</h5>
+                                        <h5 class="price">{{$item->new_price}} MMK</h5>
                                     </td>
                                     <td>
                                         <div class="product_count">
@@ -57,7 +59,7 @@
                                             onclick="var qtyInput = document.getElementById('sst{{ $item->id }}'); 
                                                      var qty = parseInt(qtyInput.value); 
                                                      if (!isNaN(qty)) qtyInput.value = qty + 1; 
-                                                     document.getElementById('total{{ $item->id }}').innerText = ((qty + 1) * {{ $item->new_price }}) + ' AED'; 
+                                                     document.getElementById('total{{ $item->id }}').innerText = ((qty + 1) * {{ $item->new_price }}) + ' MMK'; 
                                                      return false;" 
                                             class="increase items-count plus" type="button">
                                             <i class="lnr lnr-chevron-up"></i>
@@ -68,18 +70,21 @@
                                                 onclick="var qtyInput = document.getElementById('sst{{ $item->id }}'); 
                                                         var qty = parseInt(qtyInput.value); 
                                                         if (!isNaN(qty) && qty > 1) qtyInput.value = qty - 1; 
-                                                        document.getElementById('total{{ $item->id }}').innerText = ((qty - 1) * {{ $item->new_price }}) + ' AED'; 
+                                                        document.getElementById('total{{ $item->id }}').innerText = ((qty - 1) * {{ $item->new_price }}) + ' MMK'; 
                                                         return false;" 
                                                 class="reduced items-count minus" type="button">
                                                 <i class="lnr lnr-chevron-down"></i>
                                             </button>
                                         </div>
                                     </td>
-                                    <td class="total">{{$item->new_price * $item->qty}} AED</td>
+                                    <td class="total">{{$item->new_price * $item->qty}} MMK</td>
                                     <td>
-                                        <button class="btn btn-danger py-2" style="border-radius: 60%">
-                                            <i class="fa-solid fa-circle-xmark"></i>
-                                        </button>
+                                        <form action="{{route('User#CartDelete',$item->id)}}" method="get">
+                                            @csrf
+                                            <button class="btn btn-danger py-2" style="border-radius: 60%">
+                                                <i class="fa-solid fa-circle-xmark"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -106,7 +111,7 @@
                     <div class=" d-flex justify-content-between">
                         <div class=""></div>
                         <div class="cupon_text d-flex align-items-center">
-                            <h5>Sub Total: <span style="color: gray" id="subtotal">{{$total}} AED</span></h5>
+                            <h5>Sub Total: <span style="color: gray" id="subtotal">{{$total}} MMK</span></h5>
                         </div>
                     </div>    
                     
@@ -116,12 +121,12 @@
                         <div class=""></div>
                         <div class="checkout_btn_inner d-flex align-items-center">
                             <a class="gray_btn" href="{{route('User#Shop')}}">Continue Shopping</a>
-                            <a class="btn" style="background: #FFA100; color: white" href="#">Proceed to checkout</a>
+                            <button class="btn" id="btn-checkout" type="button" @if($cart->count() == 0) disabled @endif style="background: #FFA100; color: white" >Proceed to checkout</button>
                         </div>
                     </div>  
 
                 </div>
-            </div>
+            </div> 
         </div>
     </section>
     <!--================End Cart Area =================-->
@@ -133,33 +138,70 @@
             // plus click
             $('.plus').click(function(){
                 $parentNode = $(this).parents("tr");
-                $price = $parentNode.find(".price").text().replace("AED","");
+                $price = $parentNode.find(".price").text().replace("MMK","");
                 // input box ka moh val nae data phan tr
                 $qty = $parentNode.find(".qty").val()
                 $totalAmt = $price * $qty
-                $parentNode.find(".total").text($totalAmt + " AED");
+                $parentNode.find(".total").text($totalAmt + " MMK");
                 finalCalculation()
             })
 
             // minus click
             $('.minus').click(function(){
                 $parentNode = $(this).parents("tr");
-                $price = $parentNode.find(".price").text().replace("AED","");
+                $price = $parentNode.find(".price").text().replace("MMK","");
                 // input box ka moh val nae data phan tr
                 $qty = $parentNode.find(".qty").val()
                 $totalAmt = $price * $qty
-                $parentNode.find(".total").text($totalAmt + " AED");
+                $parentNode.find(".total").text($totalAmt + " MMK");
                 finalCalculation()
             })
 
             function finalCalculation(){
                 $total = 0
                 $('#productTable tbody tr').each(function(index,item){
-                   $total += Number($(item).find('.total').text().replace('AED',''))                  
+                   $total += Number($(item).find('.total').text().replace('MMK',''))                  
                 })
-                $('#subtotal').html(`${$total} AED`)
+                $('#subtotal').html(`${$total} MMK`)
 
             }
+
+            $('#btn-checkout').click(function(){
+                $orderList = []
+                $userId = $('#userId').val()
+                $orderCode = "HHK" + "-" + Math.floor(Math.random() * 10000000);
+                $totalAmt = $('#subtotal').text().replace('MMK','') * 1
+                
+                $('#productTable tbody tr').each(function(index,row){
+                    $productId = $(row).find(".productId").val()
+                    $qty = $(row).find(".qty").val()
+                    $productName = $(row).find(".productName").text()
+                    $EachTotal = $(row).find(".total").text().replace('MMK','')
+
+                    $orderList.push({
+                        'user_id' : $userId,
+                        'product_id' : $productId,
+                        'product_name' : $productName,
+                        'qty' : $qty,
+                        'order_code' : $orderCode,
+                        'each_total' : $EachTotal,  
+                        'total_amount' : $totalAmt
+                    })
+                   
+                })
+
+                $.ajax({
+                    type: 'get',
+                    url : '/user/cart/cart/temp',
+                    data : Object.assign({},$orderList),
+                    dataType : 'json',
+                    success : function(res){
+                        if(res.status == 'success'){
+                            location.href = '/user/payment'
+                        }
+                    }
+            })
+            })
         
     })
     </script>

@@ -7,6 +7,25 @@
 /* Wide Mobile Layout: 480px */
 /* Section Gaps css
 ============================================================================================ */
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Chrome, Safari, Edge, Opera */
+  margin: 0;
+}
+.mob{
+  display: none;
+}
+
+@media screen and (max-width: 992px) {
+  .mob{
+    display: block;
+  }
+}
+
 .no-padding {
   padding: 0; }
   

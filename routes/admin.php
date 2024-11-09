@@ -36,4 +36,8 @@ Route::group(['prefix'=>'admin','middleware'=>'admin'],function(){
         Route::get('edit/{id}',[ProductController::class,'editProductPage'])->name('Admin#editProductPage');
         Route::post('edit/{id}',[ProductController::class,'editProduct'])->name('Admin#editProduct');
     });
+
+    Route::group(['prefix'=>'checkout'],function(){
+        Route::get('',[AdminController::class,'checkout'])->name('Admin#checkout');
+    });
 });

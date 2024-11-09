@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\ShoeType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -60,6 +65,73 @@ class UserController extends Controller
                             ->paginate(6);
         $type = ShoeType::get();
         return view('user.shop',compact('product','type'));
+    }
+
+    public function UserCheckoutPage(){
+        $orderProduct = Session::get('tempCart');
+        return view('user.checkout',compact('orderProduct'));
+    }
+
+    public function UserCheckout(Request $request){
+       $this->validatePayment($request);
+       $data = $this->paymentData($request);
+
+       if($request->hasFile('paySlip')){
+        $filename = uniqid().$request->file('paySlip')->getClientOriginalName();
+        $request->file('paySlip')->move(public_path().'/payslip/',$filename);
+        $data['payslip_img'] = $filename;
+       }
+
+       Payment::create($data);
+       
+       $orderProduct = Session::get('tempCart');
+       
+       foreach ($orderProduct as $item) {
+        Order::create([
+            'product_id' => $item['product_id'],
+            'user_id' => $item['user_id'],
+            'count' => $item['count'],
+            'status' => $item['status'],
+            'order_code' => $item['order_code'],
+           ]);
+
+           $product = Product::find($item['product_id']);
+           if ($product) {
+               $product->stock -= $item['count'];
+               $product->save();
+           }
+           Cart::where('user_id',$item['user_id'])->where('product_id',$item['product_id'])->delete();
+       }
+       Alert::success('Success','Product Checkout Successfully');
+       return to_route('User#Success');
+    }
+
+    public function Success(){
+        return view('user.success');
+    }
+
+    private function validatePayment($request){
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'paymentMethod' => 'required',
+
+        ]);
+    }
+
+    private function paymentData($request){
+        return [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'payment_method' => $request->paymentMethod,
+            'transaction_id' => $request->transactionId,
+            'order_code' => $request->orderCode,
+            'total_amt' => $request->totalAmount
+        ];
     }
 
 }

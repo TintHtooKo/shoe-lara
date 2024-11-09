@@ -76,6 +76,10 @@ class AdminController extends Controller
         return view('admin.contactList.contactList',compact('contact'));
     }
 
+    public function checkout(){
+        return view('admin.checkout.checkout');
+    }
+
 
     // for add admin
     private function validateAddAdmin($request){
