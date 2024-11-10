@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoeTypeController;
@@ -39,5 +40,16 @@ Route::group(['prefix'=>'admin','middleware'=>'admin'],function(){
 
     Route::group(['prefix'=>'checkout'],function(){
         Route::get('',[AdminController::class,'checkout'])->name('Admin#checkout');
+        Route::get('{id}',[AdminController::class,'checkoutDetail'])->name('Admin#checkoutDetail');
+        Route::post('changeStatus/{id}',[AdminController::class,'statusChange'])->name('Admin#statusChange');
+        Route::get('delete/{id}',[AdminController::class,'paymentDelete'])->name('Admin#paymentDelete');
+    });
+
+    Route::group(['prefix'=>'profile'],function(){
+        Route::get('',[ProfileController::class,'profilePage'])->name('Admin#profile');
+        Route::get('change-password',[ProfileController::class,'changePasswordPage'])->name('Admin#changePasswordPage');
+        Route::post('change-password',[ProfileController::class,'changePassword'])->name('Admin#changePassword');
+        Route::get('change',[ProfileController::class,'changeProfilePage'])->name('Admin#changeProfilePage');
+        Route::post('change',[ProfileController::class,'changeProfile'])->name('Admin#changeProfile');
     });
 });

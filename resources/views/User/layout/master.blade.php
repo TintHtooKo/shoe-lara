@@ -52,12 +52,7 @@
 					</button>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item active"><a class="nav-link" href="#">
-								@if(Auth::user())
-									{{Auth::user()->name}}, {{Auth::user()->role}}
-								@endif</a>
-							</li>
+						<ul class="nav navbar-nav menu_nav ml-auto align-items-lg-center">
 							<li class="nav-item @if(Request::route()->getName() == 'User#Home') active @endif"><a class="nav-link" href="{{route('User#Home')}}">Home</a></li>
 							<li class="nav-item @if(Request::route()->getName() == 'User#Shop') active @endif"><a class="nav-link" href="{{route('User#Shop')}}">Shop</a></li>
 							<li class="nav-item @if(Request::route()->getName() == 'User#Contact') active @endif"><a class="nav-link" href="{{route('User#Contact')}}">Contact</a></li>							
@@ -66,6 +61,16 @@
 								@csrf
 								<li class="nav-item "><button type="submit" class="nav-link bg-transparent border-0">Logout</button></li>
 							</form>
+							<li class="nav-item mx-lg-5 @if(Request::route()->getName() == 'User#profile') active @endif">
+								<a class="nav-link" href="{{route('User#profile')}}">
+									@if (Auth::user()->image)
+									<img src="{{asset('profile/'.Auth::user()->image)}}" width="50" alt="">
+									@else	
+									<i class="fa-solid fa-user"></i>
+									@endif
+								</a>
+							</li>	
+							
 							@else
 							<li class="nav-item @if(Request::route()->getName() == 'login') active @endif"><a class="nav-link" href="{{route('login')}}">Login</a></li>
 							@endif

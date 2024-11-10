@@ -21,52 +21,46 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Image</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Shoe Type</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Order Code</th>
+                    <th scope="col">Payment Method</th>
+                    <th scope="col">Total Price</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                {{-- @if ($product->count() != 0)
-                @foreach ($product as $item)
+                @if ($payment->count() != 0)
+                @foreach ($payment as $item)
                 <tr>
-                    <td>{{ ($product->currentPage() - 1) * $product->perPage() + $loop->iteration }}</td>
+                    <td>{{ ($payment->currentPage() - 1) * $payment->perPage() + $loop->iteration }}</td>
                     <td class="col-1">
-                        <img src="{{asset('product/'.$item->image)}}" class="img-thumbnail shadow-sm rounded w-100" alt="">
+                        {{$item->name}}
                     </td>
-                    <td>{{ $item->name }}</td>
-                    <td>  
-                        @if($item->stock === 0)
-                        <span class=" bg-danger p-2 mx-2">Out Of Stock</span>                   
-                        @elseif ($item->stock < 5)
-                        {{ $item->stock}} <span class=" bg-danger p-2 mx-2">Low Stock</span>
-                        @else 
-                        {{ $item->stock}}
-                        @endif
-                    </td>
-                    <td>{{ $item->type}}</td>
-                    <td>{{ $item->new_price}}</td>
-                    @if (Auth::user()->role == 'superadmin')
+                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->order_code}} </td>
+                    <td>{{ $item->payment_method}}</td>
+                    <td>{{ $item->total_amt}} MMK</td>
+                   
                     <td>
                         <div class=" d-flex align-items-center justify-content-center ">
-                            <a href="{{route('Admin#detailProduct',$item->id)}}" class="btn btn-sm btn-warning cursor-pointer mx-2"><i class="fa-solid fa-eye "></i></a>
-                            <a href="{{route('Admin#deleteProduct',$item->id)}}" class="btn btn-sm btn-danger cursor-pointer"><i class="fa-solid fa-trash"></i></a>
+                            <a href="{{route('Admin#checkoutDetail',$item->id)}}" class="btn btn-sm btn-warning cursor-pointer mx-2"><i class="fa-solid fa-eye "></i></a>
+                            @if (Auth::user()->role == 'superadmin')
+                            <a href="{{route('Admin#paymentDelete',$item->id)}}" class="btn btn-sm btn-danger cursor-pointer"><i class="fa-solid fa-trash"></i></a>
+                            @endif
                         </div>
                     </td>
-                    @endif
+                    
                 </tr>
                 @endforeach
                 @else
                     <tr>
-                        <td colspan="5">There is no Shoe List</td>
+                        <td colspan="5">There is no checkout List</td>
                     </tr>
-                @endif --}}
+                @endif
             </tbody>
         </table>
-        {{-- <span class="d-flex justify-content-end">{{ $product->links() }}</span> --}}
+        <span class="d-flex justify-content-end">{{ $payment->links() }}</span>
     </div>
 </div>
 @endsection

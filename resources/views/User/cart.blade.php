@@ -8,8 +8,8 @@
                 <div class="col-first">
                     <h1>Shopping Cart</h1>
                     <nav class="d-flex align-items-center">
-                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="category.html">Cart</a>
+                        <a href="{{route('User#Home')}}">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="#">Cart</a>
                     </nav>
                 </div>
             </div>

@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request; 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\Order;
+use App\Models\Payment;
 use App\Models\ShoeType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -77,7 +79,44 @@ class AdminController extends Controller
     }
 
     public function checkout(){
-        return view('admin.checkout.checkout');
+        $payment = Payment::select('payments.id','payments.name','payments.email','payments.payment_method',
+                                    'payments.order_code','payments.created_at','payments.total_amt','payments.payslip_img')
+                            ->orderBy('created_at','desc')->paginate(5);
+        return view('admin.checkout.checkout',compact('payment'));
+    }
+
+    public function checkoutDetail($id){
+        $payment = Payment::find($id);
+        $order = Order::select('orders.id','orders.status','orders.order_code','orders.count','orders.product_id','products.name as product_name','products.image as product_img')
+                        ->leftJoin('products','orders.product_id','products.id')
+                        ->where('order_code',$payment->order_code)->paginate(6);
+        return view('admin.checkout.checkoutDetail',compact('payment','order'));
+    }
+
+    public function statusChange(Request $request,$id){
+        $payment = Payment::find($id);
+        $order = Order::where('order_code',$payment->order_code)->get();
+        foreach($order as $item){
+            $item->update([
+                'status' => $request['status']
+            ]);
+        }
+        Alert::success('Success', 'Status Changed Successfully');
+        return back();
+    }
+
+    public function paymentDelete($id){
+        $payment = Payment::find($id);
+        if ($payment) {
+            $payslipPath = public_path('/payslip/' . $payment->payslip_img);
+            if (file_exists($payslipPath)) {
+                unlink($payslipPath);
+            }
+            $payment->delete();
+        }
+        Order::where('order_code', $payment->order_code)->delete();
+        Alert::success('Success', 'Payment Deleted Successfully');
+        return back();
     }
 
 

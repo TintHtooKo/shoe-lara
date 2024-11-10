@@ -89,25 +89,29 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a href="#" class="dropdown-item">
-                                        <i class="icon-user"></i>
+                                        @if(Auth()->user()->image)
+                                        <img src="{{asset('/profile/'.Auth()->user()->image)}}" alt="">
+                                        @else
+                                        <img src="{{asset('admin/images/demo.png')}}" alt="">
+                                        @endif
                                         <span class="ml-2">
                                             @if (Auth()->user())
-                                                {{Auth()->user()->name}}, {{Auth()->user()->role}}
+                                                {{Auth()->user()->name}}
                                             @endif
                                         </span>
                                     </a>
-                                    <a href="./app-profile.html" class="dropdown-item">
+                                    <a href="{{route('Admin#profile')}}" class="dropdown-item">
                                         <i class="icon-user"></i>
                                         <span class="ml-2">Profile </span>
                                     </a>
-                                    <a href="./email-inbox.html" class="dropdown-item">
-                                        <i class="icon-envelope-open"></i>
-                                        <span class="ml-2">Inbox </span>
+                                    <a href="{{route('Admin#changePasswordPage')}}" class="dropdown-item">
+                                        <i class="icon-key"></i>
+                                        <span class="ml-2">Change Password </span>
                                     </a>
                                     <form action="{{route('logout')}}" method="post">
                                         @csrf
                                         <button type="submit" class="dropdown-item">
-                                            <i class="icon-key"></i>
+                                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                             <span class="ml-2">Logout </span>
                                         </button>
                                     </form>
