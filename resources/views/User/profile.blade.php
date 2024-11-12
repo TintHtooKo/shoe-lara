@@ -52,7 +52,7 @@
             </tr>
         </thead>
         <tbody>
-            @if ($order->count() != 0)
+            @if ($order)
             @foreach ($order as $item)
             <tr>
                 <td>{{ ($order->currentPage() - 1) * $order->perPage() + $loop->iteration }}</td>
@@ -87,8 +87,10 @@
 </div>
 <div class="container d-flex justify-content-end my-5">
     <div class="">
+        @if ($payment)
         <h4>Payment Method - <span class="text-muted">{{ $payment->payment_method }}</span></h4>
         <h4>Total Amount - <span class="text-muted">{{ $payment->total_amt }} MMK</span></h4>
+        @endif
     </div>
 </div>
 @endsection

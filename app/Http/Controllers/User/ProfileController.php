@@ -13,16 +13,25 @@ use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileController extends Controller
-{
-    public function profilePage(){
-        $order = Order::select('orders.id','orders.order_code','orders.status','orders.product_id','orders.created_at','orders.count',
-                                'products.name as product_name','products.image as product_image','products.new_price as product_price')
-                        ->leftJoin('products','orders.product_id','products.id')
-                        ->where('user_id',Auth::user()->id)->paginate(5);
-        $payment = Payment::select('payments.total_amt','payments.payment_method')
-                            ->where('order_code',Order::where('user_id',Auth::user()->id)->first()->order_code)->first();
-        return view('user.profile',compact('order','payment'));
+{ 
+    public function profilePage() {
+        // Retrieve paginated orders if there are any orders for the user
+        $order = Order::select('orders.id', 'orders.order_code', 'orders.status', 'orders.product_id', 'orders.created_at', 'orders.count',
+                                'products.name as product_name', 'products.image as product_image', 'products.new_price as product_price')
+                      ->leftJoin('products', 'orders.product_id', 'products.id')
+                      ->where('user_id', Auth::user()->id)
+                      ->paginate(5);
+    
+        // Check if there are any orders and retrieve the first order code if available
+        $firstOrder = Order::where('user_id', Auth::user()->id)->first();
+        $payment = $firstOrder ? Payment::select('payments.total_amt', 'payments.payment_method')
+                                         ->where('order_code', $firstOrder->order_code)
+                                         ->first()
+                               : null;
+    
+        return view('user.profile', compact('order', 'payment'));
     }
+    
 
     public function profileUpdatePage(){
         return view('user.profileUpdate');

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Action;
 use App\Models\Cart;
+use App\Models\Comment;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Rating;
 use App\Models\ShoeType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,14 +26,37 @@ class UserController extends Controller
         return view('user.dashboard',compact('product'));
     }
 
-    public function productDetail($id){
-        $product = Product::select('shoe_types.type as type','products.id','products.name','products.new_price',
-                                    'products.stock','products.image','products.shoe_type_id','products.short_desc'
-                                    ,'products.long_desc','products.old_price')
-                                    ->leftJoin('shoe_types','products.shoe_type_id','shoe_types.id')
-                                    ->find($id);
-        return view('user.productDetail',compact('product'));
-    }
+        public function productDetail($id){
+            $product = Product::select('shoe_types.type as type','products.id','products.name','products.new_price',
+                                        'products.stock','products.image','products.shoe_type_id','products.short_desc'
+                                        ,'products.long_desc','products.old_price')
+                                        ->leftJoin('shoe_types','products.shoe_type_id','shoe_types.id')
+                                        ->find($id);
+            $comment = Comment::select('comments.*','users.name as user_name','users.image as user_img')
+                                ->leftJoin('users','comments.user_id','users.id')
+                                ->where('comments.product_id',$id)
+                                ->orderBy('comments.created_at','desc')
+                                ->get();
+            
+            $rating = Rating::where('product_id',$id)->avg('count');
+
+
+            $personalRating = null;
+            if (Auth::check()) {
+                $personalRating = Rating::select('ratings.*', 'users.id as user_id')
+                    ->leftJoin('users', 'ratings.user_id', '=', 'users.id')
+                    ->where('ratings.product_id', $id)
+                    ->where('ratings.user_id', Auth::id()) // Only apply if user is logged in
+                    ->first();
+            }
+            if (Auth::check()) {
+                $this->actionAdd(Auth::user()->id, $id, 'seen');
+            }
+            $viewCount = Action::where('post_id',$id)->where('action','seen')->get();
+            $viewCount = count($viewCount);
+
+            return view('user.productDetail',compact('product','comment','rating','personalRating','viewCount'));
+        }
 
     public function UserContact(){
         return view('user.contact');
@@ -132,6 +158,14 @@ class UserController extends Controller
             'order_code' => $request->orderCode,
             'total_amt' => $request->totalAmount
         ];
+    }
+
+    private function actionAdd($user_id, $product_id, $action){
+        Action::create([
+            'user_id'=> $user_id,
+            'post_id' => $product_id,
+            'action' => $action
+        ]);
     }
 
 }

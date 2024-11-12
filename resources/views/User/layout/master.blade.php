@@ -32,6 +32,17 @@
 	<link rel="stylesheet" href="{{asset('user/css/main.css')}}">
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<style>
+		.stars {
+        display: flex;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #ccc;
+    }
+    .stars .star.full {
+        color: gold;
+    }
+	</style>
 </head>
 
 <body>
